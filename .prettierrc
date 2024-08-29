@@ -1,0 +1,7 @@
+//  this help the code to be used in same by all coders and help to not get error on based of syntax
+
+{
+    "singleQuote": true,
+    "bracketSpacing": true
+    
+}
