@@ -14,6 +14,7 @@ app.use(cors({
 }))
 
 
+
 // import routes
 import { router } from "./routes/user.routes.js"
 

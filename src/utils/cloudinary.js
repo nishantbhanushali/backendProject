@@ -10,7 +10,7 @@ cloudinary.config({
 });
 
   // Upload an image
-  const uploadResult = async (localfilepath) =>
+  const uploadOnCloudinary = async (localfilepath) =>
   {
     try {
         if(!localfilepath) return null;
@@ -31,4 +31,4 @@ cloudinary.config({
     }
 }
 
-export {uploadResult}
+export {uploadOnCloudinary}
