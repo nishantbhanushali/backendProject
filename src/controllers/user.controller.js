@@ -18,7 +18,9 @@ const registerUser = asyncHandlers( async(req, res) =>{
 // taking the data from the frontend provided by user
 
 let {email, password, username} = req.body;
-console.log(`email : ${email}`);
+console.log(req.body);
+
+// console.log(`email : ${email}`);
 
 // validating if the data is not empty ...there can be many type of validation
 // if(email === ""){
@@ -30,26 +32,28 @@ if (
 }
 
 //  validating is user with samw name or number is not avaliable
-let existedUser = User.findOne({
+let existedUser = await  User.findOne({
     $or: [{email}, {username}  ]
   })
 
   if(existedUser){
-    throw new ApiError(409, "user Already exist")
+    throw new ApiError(409, "user or email id os already exit")
   }
   
 // this is how you the file path from multer gorm local storage
-  let avatarlocalpath= req.files?.avatar[0]?.path
-  let coverImageLocalPath = req.files?.coverimage[0]?.path
+let avatarlocalpath = req.files?.avatar?.[0]?.path;
+let coverImageLocalPath = req.files?.coverimage?.[0]?.path;
+console.log("Uploaded files:", req.files);
+
 
   if(!avatarlocalpath){
-    throw new ApiError(404, "avatar not uploaded")
+    throw new ApiError(404, "avatar not uploaded in local path")
   }
 // upload the avatar and cover to the cloudinart and check uploaded or not
    let avatarUploadCloud  =  await   uploadOnCloudinary(avatarlocalpath)
    let coverimageUploadCloud = await uploadOnCloudinary(coverImageLocalPath)
    if (!avatarUploadCloud) {
-    throw new ApiError(404, "avatar not uploaded")
+    throw new ApiError(404, "avatar not uploaded in cloudinary")
    }
   
 //    create a user based on response
@@ -68,8 +72,9 @@ let firstUser = await User.find(user._id).select("-password -refreshtoken")
 if(!firstUser){
   throw new ApiError(500, "something gone wrong internally")
 }
+
 return res.status(201).json(
-  new ApiResponse(200, createdUser, "User registered Successfully")
+  new ApiResponse(200, firstUser, "User registered Successfully")
 )
 
 })

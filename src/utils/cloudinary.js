@@ -1,34 +1,40 @@
 import { v2 as cloudinary } from 'cloudinary';
-import fs from "fs"
-import {ApiError} from "apiError.js"
+import fs from "fs";
+import dotenv from "dotenv";
+// import { ApiError } from './apiError.js'; // Ensure correct path
 
-// Configuration
+// Cloudinary configuration
 cloudinary.config({ 
-    cloud_name: process.env.CLOUDINART_CLOUD_NAME,
-    api_key: process.env.CLOUDINART_API_KEY, 
-    api_secret:process.env.CLOUDINART_API_SECRET// Click 'View API Keys' above to copy your API secret
+    cloud_name: "dhuusmsrp",
+    api_key: "126952492943824", 
+    api_secret: "jroJYatfjXcTXkRaXgIzjYEnUVo",
 });
 
-  // Upload an image
-  const uploadOnCloudinary = async (localfilepath) =>
-  {
+// Function to upload a file to Cloudinary
+const uploadOnCloudinary = async (localfilepath) => {
     try {
-        if(!localfilepath) return null;
-        // upload the file in cloudinary
-        let response = await cloudinary.uploader.upload(localfilepath, {
-            resource_type:'auto'
-           
-        })
-        return response
-    }
-    catch(error){
+        if (!localfilepath) return null;
+
+        // Upload the file to Cloudinary
+        const response = await cloudinary.uploader.upload(localfilepath, {
+            resource_type: 'auto'
+        });
         fs.unlinkSync(localfilepath)
-        // ApiError()
-        return null
-        
-        
 
+        return response;
+    } catch (error) {
+        // Delete the file only if it exists
+        if (fs.existsSync(localfilepath)) {
+            fs.unlinkSync(localfilepath);
+        }
+
+        // Log the error or use a custom error handler
+        console.error("Error uploading to Cloudinary:", error);
+        // throw new ApiError(500, "Cloudinary upload failed"); // Use this if you have a custom error handler
+
+        return null;
     }
-}
+};
+// console.log( cloud_name, api_key, api_secret);
 
-export {uploadOnCloudinary}
+export { uploadOnCloudinary };
