@@ -6,8 +6,8 @@ import dotenv from "dotenv";
 // Cloudinary configuration
 cloudinary.config({ 
     cloud_name: "dhuusmsrp",
-    api_key: "126952492943824", 
-    api_secret: "jroJYatfjXcTXkRaXgIzjYEnUVo",
+    api_key: "869147248137917" ,
+    api_secret: "QQ6WrfpLEcvH0Mkq13iRoUx0klw"
 });
 
 // Function to upload a file to Cloudinary
