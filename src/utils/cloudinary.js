@@ -5,9 +5,9 @@ import dotenv from "dotenv";
 
 // Cloudinary configuration
 cloudinary.config({ 
-    cloud_name: "dhuusmsrp",
-    api_key: "869147248137917" ,
-    api_secret: "QQ6WrfpLEcvH0Mkq13iRoUx0klw"
+    cloud_name: CLOUDINARY_CLOUD_NAME,
+    api_key:CLOUDINARY_API_KEY ,
+    api_secret: CLOUDINARY_API_SECRET
 });
 
 // Function to upload a file to Cloudinary
@@ -19,14 +19,24 @@ const uploadOnCloudinary = async (localfilepath) => {
         const response = await cloudinary.uploader.upload(localfilepath, {
             resource_type: 'auto'
         });
+      
         fs.unlinkSync(localfilepath)
-
         return response;
     } catch (error) {
         // Delete the file only if it exists
         if (fs.existsSync(localfilepath)) {
             fs.unlinkSync(localfilepath);
         }
+    }
+}
+    const deleteFromCloudinary = async (publicId) => {
+            try {
+                await cloudinary.uploader.destroy(publicId);
+            } catch (error) {
+                // Delete the file only if it exists
+                if (fs.existsSync(localfilepath)) {
+                    fs.unlinkSync(localfilepath);
+                }
 
         // Log the error or use a custom error handler
         console.error("Error uploading to Cloudinary:", error);
@@ -37,4 +47,4 @@ const uploadOnCloudinary = async (localfilepath) => {
 };
 // console.log( cloud_name, api_key, api_secret);
 
-export { uploadOnCloudinary };
+export { uploadOnCloudinary, deleteFromCloudinary  }

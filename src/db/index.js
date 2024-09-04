@@ -8,13 +8,14 @@ const connectDb = async( ) =>{
        console.log("monogodb connnected");
        
 
-    }catch(errora){
+    }catch(error){
         console.log("mongodbconnection error");
         process.exit(1)
         
 
     }
 
+    
 }
 
 export default connectDb
